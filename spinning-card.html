@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Spinning Card</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #111;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-container {
+      width: 300px;
+      height: 450px;
+      animation: float 4s ease-in-out infinite;
+      transform: scale(1);
+      transform-origin: center;
+    }
+
+    @media (max-width: 400px) {
+      .card-container {
+        transform: scale(0.8);
+      }
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: spin 4s linear infinite;
+    }
+
+    .card-container:hover .card {
+      animation-play-state: paused;
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .card-front {
+      background-color: #111;
+    }
+
+    .card-back {
+      background-color: #111;
+      transform: rotateY(180deg);
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes spin {
+      0%   { transform: rotate3d(0.1, 1, 0, 0deg); }
+      50%  { transform: rotate3d(0.1, 1, 0, 180deg); }
+      100% { transform: rotate3d(0.1, 1, 0, 360deg); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <div class="card" id="card">
+      <div class="card-face card-front">
+        <img id="cardFront" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/White_cat_on_purple_background.jpg/360px-White_cat_on_purple_background.jpg" alt="Front Image" />
+      </div>
+      <div class="card-face card-back">
+        <img id="cardBack" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Black_cat_Lucy.jpg/360px-Black_cat_Lucy.jpg" alt="Back Image" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const frontImgs = [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/White_cat_on_purple_background.jpg/360px-White_cat_on_purple_background.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/360px-Cat03.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Cat_black_and_white.jpg/360px-Cat_black_and_white.jpg"
+    ];
+
+    const backImgs = [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Black_cat_Lucy.jpg/360px-Black_cat_Lucy.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Blackkitten.jpg/360px-Blackkitten.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Black_Cat_%28Copyright_Owner_Unknown%29.jpg/360px-Black_Cat_%28Copyright_Owner_Unknown%29.jpg"
+    ];
+
+    let currentIndex = 0;
+    let halfTurn = false;
+
+    const front = document.getElementById('cardFront');
+    const back = document.getElementById('cardBack');
+
+    setInterval(() => {
+      if (halfTurn) {
+        currentIndex = (currentIndex + 1) % frontImgs.length;
+        front.src = frontImgs[currentIndex];
+        back.src = backImgs[currentIndex];
+      }
+      halfTurn = !halfTurn;
+    }, 2000);
+  </script>
+</body>
+</html>
